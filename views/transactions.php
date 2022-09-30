@@ -28,6 +28,9 @@
         <table>
             <thead>
                 <tr>
+                    <th colspan="4"><h1>CSV File Parser To HTML</h1></th>
+                </tr>
+                <tr>
                     <th>Date</th>
                     <th>Check #</th>
                     <th>Description</th>
@@ -39,10 +42,22 @@
                 <?php if(! empty($transactions)): ?>
                         <?php foreach($transactions as $transaction): ?>
                             <tr>
-                                <td><?php echo $transaction[0] ?></td>
-                                <td><?php echo $transaction[1] ?></td>
-                                <td><?php echo $transaction[2] ?></td>
-                                <td><?php echo $transaction[3] ?></td>
+                                <td><?= formatDate($transaction['date']) ?></td>
+                                <td><?= $transaction['checkNumber'] ?></td>
+                                <td><?= $transaction['description'] ?></td>
+                                <td>
+                                    <?php if($transaction['amount'] < 0): ?>
+                                        <span style="color: red;">
+                                            <?= formatDollerAmount($transaction['amount']) ?>
+                                        </span>
+                                    <?php elseif($transaction['amount'] > 0): ?>
+                                        <span style="color: green;">
+                                            <?= formatDollerAmount($transaction['amount']) ?>
+                                        </span>
+                                    <?php else: ?>
+                                        <?= formatDollerAmount($transaction['amount']) ?>
+                                    <?php endif ?>
+                                </td>
                             </tr>    
                         <?php endforeach ?>
                 <?php endif ?>
@@ -51,15 +66,15 @@
             <tfoot>
                 <tr>
                     <th colspan="3">Total Income:</th>
-                    <td><!-- YOUR CODE --></td>
+                    <td><?= formatDollerAmount($totals['totalIncome'] ?? 0) ?></td>
                 </tr>
                 <tr>
                     <th colspan="3">Total Expense:</th>
-                    <td><!-- YOUR CODE --></td>
+                    <td><?= formatDollerAmount($totals['totalExpense'] ?? 0) ?></td>
                 </tr>
                 <tr>
                     <th colspan="3">Net Total:</th>
-                    <td><!-- YOUR CODE --></td>
+                    <td><?= formatDollerAmount($totals['netTotal'] ?? 0) ?></td>
                 </tr>
             </tfoot>
         </table>

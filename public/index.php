@@ -1,7 +1,7 @@
 <?php
     declare(strict_types = 1);
 
-    # directory
+    # get directory
     $root = dirname(__DIR__) . DIRECTORY_SEPARATOR; # /var/www/html/tfp/
 
     # constants
@@ -11,19 +11,23 @@
 
     # include App.php
     require (APP_PATH.('App.php'));
-
+    # called the function getTransactionFiles()
     $files = getTransactionFiles(FILES_PATH);
-
+    # empty array
     $transactions = [];
-
+    # merge arrays
     foreach($files as $file){
         $transactions = array_merge($transactions, getTransactions($file));
     }
+    $totals = calculateTotal($transactions);
+    /*
+        echo '<pre>';
+        print_r($transactions);
+        echo '</pre>';
+    */
+    # include helper.php
+    require (APP_PATH . 'helpers.php');
 
-    // echo '<pre>';
-    // print_r($transactions);
-    // echo '</pre>';
-
-    # include transactions.php file
+    # include transactions.php
     require (VIEWS_PATH . 'transactions.php');
 ?>
